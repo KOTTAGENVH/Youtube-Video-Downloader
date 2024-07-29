@@ -1,19 +1,18 @@
-from pytube import YouTube
+import yt_dlp
 
 # Ask for the link from the user
 link = input("Enter the link of the YouTube video you want to download: ")
-yt = YouTube(link)
 
-# Showing details
-# print("Title: ", yt.title)
-# print("Number of views: ", yt.views)
-# print("Length of video: ", yt.length)
-# print("Rating of video: ", yt.rating)
+# Define the download options
+ydl_opts = {
+    'format': 'bestvideo+bestaudio/best',  # Download best available quality
+    'outtmpl': '%(title)s.%(ext)s',        # Save the file with the title of the video
+}
 
-# Getting the highest resolution possible
-ys = yt.streams.get_highest_resolution()
-
-# Starting download
-print("Downloading...")
-ys.download()
-print("Download completed!!")
+try:
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        # Download the video
+        ydl.download([link])
+    print("Download completed!!")
+except Exception as e:
+    print(f"An error occurred: {e}")
